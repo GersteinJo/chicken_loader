@@ -14,6 +14,7 @@ class CustomImageDataset(Dataset):
         self.image_dir = image_dir
         self.image_paths = [os.path.join(image_dir, filename) for filename in os.listdir(image_dir) if filename.endswith('.jpg') or filename.endswith('.png')]
         self.transform = transform
+        self.to_tensor = transforms.ToTensor()
 
     def __len__(self):
         return len(self.image_paths)
@@ -22,6 +23,7 @@ class CustomImageDataset(Dataset):
         # Load image
         img_path = self.image_paths[idx]
         image = Image.open(img_path).convert('RGB')
+        image = self.to_tensor(image)
 
         # Apply transformations (e.g., resizing, normalization)
         if self.transform:
